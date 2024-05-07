@@ -17,36 +17,6 @@ namespace WindowsFormsApp1
             InitializeComponent();
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             double height, weight, result;
@@ -54,24 +24,19 @@ namespace WindowsFormsApp1
             if (!double.TryParse(textBox1.Text, out height) ||
                 !double.TryParse(textBox2.Text, out weight))
             {
-                MessageBox.Show("Please enter a valid value.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("請輸入正確的數值.", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            String message = "BMI Calc Result:";
-            if (radioButton1.Checked)
-            {
-                message += $"\nHeight: {height} cm";
-                result = weight/((height / 100)* (height / 100));
-            }
-            else
-            {
-                message += $"\nHeight: {height} m";
-                result = weight / (height * height);
-            }
-            message += $"\nWeight: {weight} kg";
+            height = radioButton1.Checked ? height / 100 : height;
+            String message = radioButton1.Checked ? $"\n身高: {height*100} 公分" : $"\n身高: {height} 公尺";
+            result = weight / (height * height);
+            message += $"\n體重: {weight} 公斤";
             message += $"\nBMI: {result:F1}";
-
-            MessageBox.Show(message, "Result", MessageBoxButtons.OK);
+            if (result >= 27) message += "\n啊～「肥胖」，需要立刻力行「健康體重管理」囉！";
+            else if (result >= 24) message += "\n「體重過重」了，要小心囉，趕快力行「健康體重管理」！";
+            else if (result >= 18.5) message += "\n恭喜！「健康體重」，要繼續保持！";
+            else message += "\n「體重過輕」，需要多運動，均衡飲食，以增加體能，維持健康！";
+            MessageBox.Show(message, "計算結果", MessageBoxButtons.OK);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -79,6 +44,11 @@ namespace WindowsFormsApp1
             textBox1.Clear();
             textBox1.Clear();
             radioButton1.Checked = true;
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/XingYanTW/BMI-Calc");
         }
     }
 }
